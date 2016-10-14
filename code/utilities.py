@@ -1,14 +1,21 @@
 import pandas as pd
 
 def read_data():
-    train = pd.read_csv("../input/train.csv")
-    test = pd.read_csv("../input/test.csv")
+    """Read in the raw datasets and set the index"""
+
+    train = pd.read_csv("../input/train.csv").set_index("id")
+    test = pd.read_csv("../input/test.csv").set_index("id")
+
     return train, test
 
-def main():
-    train, test = read_data()
-    print(train.head())
-    print(train.columns.values)
+def column_check(df1, df2):
+    """Remove any columns that don't exist in both datasets"""
 
-if __name__ == '__main__':
-    main()
+    for column in df1.columns.values:
+        if column not in df2.columns.values:
+            df1 = df1.drop(column, axis=1)
+    for column in df2.columns.values:
+        if column not in df1.columns.values:
+            df2 = df2.drop(column, axis=1)
+
+    return df1, df2
