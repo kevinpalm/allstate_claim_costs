@@ -5,14 +5,13 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import RobustScaler, MinMaxScaler, Normalizer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error
+from sklearn.feature_selection import SelectKBest
 
 
 
 def get_estimator():
     """Helper function so that the estimator parameters aren't stored in multiple places"""
-    estimator = Pipeline([("scale", RobustScaler()),
-                          ("normalize", Normalizer()),
-                          ("rescale", MinMaxScaler()),
+    estimator = Pipeline([("normalize", Normalizer()),
                           ("regress", RandomForestRegressor())])
     return estimator
 
