@@ -33,20 +33,32 @@ def local_test(train_x, train_y):
 
 def main():
 
-    # Read in the data
-    train, test = read_data()
+    try:
+        # Read in the pickle files if they exist already
+        train_x = pd.read_pickle("../input/train_x.pkl")
+        train_y = pd.read_pickle("../input/train_y.pkl")
+        test_x = pd.read_pickle("../input/test_x.pkl")
 
-    # Pull out the outcomes
-    train_y = train["loss"].tolist()
-    train_x = train.drop("loss", axis=1)
+    except:
+        # Read in the data
+        train, test = read_data()
 
-    # Get dummies and check for misfit dummies
-    train_x = pd.get_dummies(train_x)
-    test_x = pd.get_dummies(test)
-    train_x, test_x = column_check(train_x, test_x)
+        # Pull out the outcomes
+        train_y = train["loss"].tolist()
+        train_x = train.drop("loss", axis=1)
 
-    # Do a local test
-    local_test(train_x, train_y)
+        # Get dummies and check for misfit dummies
+        train_x = pd.get_dummies(train_x)
+        test_x = pd.get_dummies(test)
+        train_x, test_x = column_check(train_x, test_x)
+
+        # Pickle data files
+        train_x.to_pickle("../input/train_x.pkl")
+        train_y.to_pickle("../input/train_y.pkl")
+        test_x.to_pickle("../input/test_x.pkl")
+
+    # # Do a local test
+    # local_test(train_x, train_y)
 
 if __name__ == '__main__':
     main()
